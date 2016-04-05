@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:resource="http://www.my9yu.com/common/resource"
+	xmlns:socket="http://www.my9yu.com/common/socket" 
+	xmlns:protocol="http://www.my9yu.com/common/protocol"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.my9yu.com/common/protocol http://www.my9yu.com/common/protocol/protocol-2.5.xsd
+http://www.my9yu.com/common/socket http://www.my9yu.com/common/socket/socket-2.5.xsd
+http://www.my9yu.com/common/resource http://www.my9yu.com/common/resource/resource-2.5.xsd
+http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<!-- 通讯配置 -->
+	<import resource="classpath:test-socket.xml" />
+
+	<!-- 开启注释配置 -->
+	<context:annotation-config />
+
+	<!-- 自动包扫描配置 -->
+	<context:component-scan base-package="com.my9yu.common, com.my9yu.charge"/>
+
+	<!-- 配置文件载入配置 -->
+	<context:property-placeholder location="classpath:test-server.properties"/>
+	
+	<!-- 充值服配置信息 -->
+	<bean class="com.my9yu.charge.Config">
+		<property name="retryInterval" value="${retry.interval}" />
+		<property name="retryTimes" value="${retry.times}" />
+	</bean>
+	<!-- 管理后台配置信息 -->
+	<bean class="com.my9yu.charge.admin.AdminConfig">
+		<property name="allowIp" value="${admin.allow_ip}" />
+	</bean>
+	
+	<!-- 数据环境配置 -->
+	<mongo:mongo id="mongo" host="${mongo.host}" port="${mongo.port}" />
+	<mongo:db-factory id="mongoDbFactory" dbname="${mongo.dbname}" mongo-ref="mongo" username="${mongo.username}" password="${mongo.password}" />
+  	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+    	<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>
+	<mongo:repositories base-package="com.my9yu.charge" />
+	
+	<!-- JSON 请求与回应的配置 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<util:list id="beanList">
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</util:list>
+		</property>
+	</bean>
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+	
+</beans>

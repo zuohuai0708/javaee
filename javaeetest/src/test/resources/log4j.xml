@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration>
+	
+	<!-- 控制台输出配置 -->
+	<appender name="console.appender" 
+		class="org.apache.log4j.ConsoleAppender">
+		<!-- 输出格式设置 -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- %d:时间 %t:线程 %p:级别 %c:类名 %m:信息 %n:换行 -->
+			<param name="ConversionPattern" 
+				value="%d [%t] %p : %c - %m%n" />
+		</layout>
+	</appender>
+	
+	<category name="com.my9yu.charge">
+		<level value="DEBUG" />
+	</category>
+	
+	<category name="org.springframework.data.mongodb">
+		<level value="DEBUG" />
+	</category>
+
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="console.appender" />
+	</root>
+</log4j:configuration>

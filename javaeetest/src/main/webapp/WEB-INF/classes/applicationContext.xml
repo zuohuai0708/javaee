@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xmlns:resource="http://www.my9yu.com/common/resource" xmlns:socket="http://www.my9yu.com/common/socket"
+	xmlns:protocol="http://www.my9yu.com/common/protocol" xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+http://www.my9yu.com/common/protocol http://www.my9yu.com/common/protocol/protocol-2.5.xsd
+http://www.my9yu.com/common/socket http://www.my9yu.com/common/socket/socket-2.5.xsd
+http://www.my9yu.com/common/resource http://www.my9yu.com/common/resource/resource-2.5.xsd
+http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+
+	<!-- 开启注释配置 -->
+	<context:annotation-config />
+
+	<!-- 自动包扫描配置 -->
+	<context:component-scan base-package="com.edu">
+		<!-- 避免controller重复扫描 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!--  
+	JSON 请求与回应的配置
+	<bean id="mappingJacksonHttpMessageConverter" class="com.edu.common.MappingJackson2HttpMessageConverter" />
+
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		
+		<property name="messageConverters">
+			<util:list id="beanList">
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</util:list>
+		</property>
+	</bean> -->
+
+
+	<mvc:interceptors>
+		<!-- 使用bean定义一个Interceptor，直接定义在mvc:interceptors根下面的Interceptor将拦截所有的请求 -->
+		<bean class="com.edu.interceptor.AllInterceptor" />
+	</mvc:interceptors>
+</beans>

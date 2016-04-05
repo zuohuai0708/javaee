@@ -1,0 +1,30 @@
+对外充值接口
+ws/pay/account/{oid}/{sid}?content=账号&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)			POST					按帐号名充值
+ws/pay/player/{oid}/{sid}?content=角色名&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)			POST					按角色名充值
+ws/pay/target/{oid}/{sid}?content=玩家ID&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)			POST					按目标标识充值
+
+对外查询接口
+ws/query/charge/{oid}/{sid}?order={订单}			GET						获取指定的订单信息
+ws/query/account/{oid}/{sid}?content={账号}		GET						查询指定帐号的信息
+ws/query/player/{oid}/{sid}?content={角色}			GET						查询指定角色的信息
+ws/query/target/{oid}/{sid}?content=玩家ID			GET						查询指定标识的信息
+
+测试充值接口(用于测试服充值返还)
+admin/pay-test/account/{oid}/{sid}?content=账号&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)				POST					按帐号名充值
+admin/pay-test/player/{oid}/{sid}?content=角色名&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)				POST					按角色名充值
+admin/pay-test/target/{oid}/{sid}?content=玩家ID&order=订单号&source=充值渠道&money=国家货币&gold=元宝&addition=附加信息&sign=签名(content + order + key)				POST					按目标标识充值
+
+充值服数据管理接口
+admin/operators						POST					添加新运营商
+admin/operators/{oid}				DELETE					删除指定运营商
+admin/operators/{oid}				PUT						修改运营商信息
+admin/operators/{oid}				GET						获取运营商信息
+admin/operators						GET						获取全部运营商摘要信息
+admin/operators/{oid}/servers		POST					添加/更新指定运营商的服务器
+admin/operators/{oid}/servers/{sid}	DELETE					删除指定运营商的特定服务器
+admin/operators/{oid}/servers/{sid}	GET						获取指定运营商的单个服务器信息
+admin/operators/{oid}/servers		GET						获取指定运营商的全部服务器信息(按标识顺序)
+
+
+对管理后台的接口
+/admin/charges/complete/between?start=开始时间(时间戳毫秒)&end=结束时间(时间戳毫秒)		POST	获取指定时间之内的全部完成充值记录(不包括指定时间点)
