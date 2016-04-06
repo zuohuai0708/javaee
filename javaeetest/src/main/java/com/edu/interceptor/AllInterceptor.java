@@ -1,53 +1,37 @@
 package com.edu.interceptor;
 
-import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.context.request.WebRequestInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class AllInterceptor implements WebRequestInterceptor {
+import com.edu.model.UserVo;
+import com.edu.utils.JsonUtils;
 
-	
-	@PostConstruct
-	private void init(){
-		System.out.println("All Interceptor Init");
-	}
-	
-	/**
-	 * 在请求处理之前执行，该方法主要是用于准备资源数据的，然后可以把它们当做请求属性放到WebRequest中
-	 */
-	@Override
-	public void preHandle(WebRequest request) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println("AllInterceptor...............................");
-		request.setAttribute("request", "request", WebRequest.SCOPE_REQUEST);// 这个是放到request范围内的，所以只能在当前请求中的request中获取到
-		request.setAttribute("session", "session", WebRequest.SCOPE_SESSION);// 这个是放到session范围内的，如果环境允许的话它只能在局部的隔离的会话中访问，否则就是在普通的当前会话中可以访问
-		request.setAttribute("globalSession", "globalSession", WebRequest.SCOPE_GLOBAL_SESSION);// 如果环境允许的话，它能在全局共享的会话中访问，否则就是在普通的当前会话中访问
-	}
+public class AllInterceptor extends HandlerInterceptorAdapter {
+	public static final String NAME = "";
 
 	/**
-	 * 该方法将在Controller执行之后，返回视图之前执行，ModelMap表示请求Controller处理之后返回的Model对象，所以可以在
-	 * 这个方法中修改ModelMap的属性，从而达到改变返回的模型的效果。
+	 * 执行完controller之后
 	 */
 	@Override
-	public void postHandle(WebRequest request, ModelMap map) throws Exception {
-		// TODO Auto-generated method stub
-		for (String key : map.keySet())
-			System.out.println(key + "-------------------------");
-		;
-		map.put("name3", "value3");
-		map.put("name1", "name1");
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modelAndView) throws Exception {
+		System.out.println("postHandle");
 	}
 
-	/**
-	 * 该方法将在整个请求完成之后，也就是说在视图渲染之后进行调用，主要用于进行一些资源的释放
-	 */
 	@Override
-	public void afterCompletion(WebRequest request, Exception exception) throws Exception {
-		// TODO Auto-generated method stub
-		System.out.println(exception + "-=-=--=--=-=-=-=-=-=-=-=-==-=--=-=-=-=");
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		System.out.println("preHandle");
+		return true;
+	}
+
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
+		System.out.println("afterCompletion");
 	}
 
 }

@@ -17,99 +17,48 @@
 package com.edu.common;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.springframework.http.HttpInputMessage;
+import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.edu.model.UserVo;
 
-/**
- * Implementation of {@link org.springframework.http.converter.HttpMessageConverter HttpMessageConverter} that
- * can read and write JSON using <a href="http://jackson.codehaus.org/">Jackson 2.x's</a> {@link ObjectMapper}.
- *
- * <p>This converter can be used to bind to typed beans, or untyped {@link java.util.HashMap HashMap} instances.
- *
- * <p>By default, this converter supports {@code application/json} and {@code application/*+json}.
- * This can be overridden by setting the {@link #setSupportedMediaTypes supportedMediaTypes} property.
- *
- * <p>The default constructor uses the default configuration provided by {@link Jackson2ObjectMapperBuilder}.
- *
- * <p>Compatible with Jackson 2.1 and higher.
- *
- * @author Arjen Poutsma
- * @author Keith Donald
- * @author Rossen Stoyanchev
- * @author Juergen Hoeller
- * @author Sebastien Deleuze
- * @since 3.1.2
- */
-public class MappingJackson2HttpMessageConverter extends AbstractJackson2HttpMessageConverter {
-
-	private String jsonPrefix;
-
-
-	/**
-	 * Construct a new {@link MappingJackson2HttpMessageConverter} using default configuration
-	 * provided by {@link Jackson2ObjectMapperBuilder}.
-	 */
-	public MappingJackson2HttpMessageConverter() {
-		this(Jackson2ObjectMapperBuilder.json().build());
-	}
-
-	/**
-	 * Construct a new {@link MappingJackson2HttpMessageConverter} with a custom {@link ObjectMapper}.
-	 * You can use {@link Jackson2ObjectMapperBuilder} to build it easily.
-	 * @see Jackson2ObjectMapperBuilder#json()
-	 */
-	public MappingJackson2HttpMessageConverter(ObjectMapper objectMapper) {
-		super(objectMapper, new MediaType("application", "json", DEFAULT_CHARSET),
-				new MediaType("application", "*+json", DEFAULT_CHARSET));
-	}
-
-	/**
-	 * Specify a custom prefix to use for this view's JSON output.
-	 * Default is none.
-	 * @see #setPrefixJson
-	 */
-	public void setJsonPrefix(String jsonPrefix) {
-		this.jsonPrefix = jsonPrefix;
-	}
-
-	/**
-	 * Indicate whether the JSON output by this view should be prefixed with "{} &&". Default is false.
-	 * <p>Prefixing the JSON string in this manner is used to help prevent JSON Hijacking.
-	 * The prefix renders the string syntactically invalid as a script so that it cannot be hijacked.
-	 * This prefix does not affect the evaluation of JSON, but if JSON validation is performed on the
-	 * string, the prefix would need to be ignored.
-	 * @see #setJsonPrefix
-	 */
-	public void setPrefixJson(boolean prefixJson) {
-		this.jsonPrefix = (prefixJson ? "{} && " : null);
-	}
-
+public class MappingJackson2HttpMessageConverter implements HttpMessageConverter<UserVo> {
 
 	@Override
-	protected void writePrefix(JsonGenerator generator, Object object) throws IOException {
-		if (this.jsonPrefix != null) {
-			generator.writeRaw(this.jsonPrefix);
-		}
-		String jsonpFunction =
-				(object instanceof MappingJacksonValue ? ((MappingJacksonValue) object).getJsonpFunction() : null);
-		if (jsonpFunction != null) {
-			generator.writeRaw(jsonpFunction + "(");
-		}
+	public boolean canRead(Class<?> clazz, MediaType mediaType) {
+		return true;
 	}
 
 	@Override
-	protected void writeSuffix(JsonGenerator generator, Object object) throws IOException {
-		String jsonpFunction =
-				(object instanceof MappingJacksonValue ? ((MappingJacksonValue) object).getJsonpFunction() : null);
-		if (jsonpFunction != null) {
-			generator.writeRaw(");");
-		}
+	public boolean canWrite(Class<?> clazz, MediaType mediaType) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public List<MediaType> getSupportedMediaTypes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserVo read(Class<? extends UserVo> clazz, HttpInputMessage inputMessage)
+			throws IOException, HttpMessageNotReadableException {
+		// TODO Auto-generated method stub
+		return UserVo.valueOf("李四", 1000);
+	}
+
+	@Override
+	public void write(UserVo t, MediaType contentType, HttpOutputMessage outputMessage)
+			throws IOException, HttpMessageNotWritableException {
+		// TODO Auto-generated method stub
+
 	}
 
 }
