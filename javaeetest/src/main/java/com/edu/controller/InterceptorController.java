@@ -14,10 +14,10 @@ public class InterceptorController {
 
 	@ResponseBody
 	@RequestMapping(value = "testInterceptor", method = { RequestMethod.GET, RequestMethod.POST }, produces = {
-			"application/text" })
+			"application/json" })
 	public UserVo testInterceptor() {
 		System.out.println("Hello Interceptor !!!");
-		UserVo vo = UserVo.valueOf("张三", 123);
+		UserVo vo = UserVo.valueOf("zhangsan", 123);
 		// TODO
 		return vo;
 	}

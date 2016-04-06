@@ -8,7 +8,7 @@ public class SnConvertor implements Converter<UserVo, UserVo> {
 
 	@Override
 	public UserVo convert(UserVo source) {
-		return UserVo.valueOf("李四", 120);
+		return UserVo.valueOf("lisi", 120);
 	}
 
 }

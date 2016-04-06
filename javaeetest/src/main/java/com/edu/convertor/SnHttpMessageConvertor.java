@@ -12,9 +12,11 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 
 import com.edu.model.UserVo;
 
+//MappingJacksonHttpMessageConverter 
 public class SnHttpMessageConvertor extends AbstractHttpMessageConverter<UserVo> {
 	public SnHttpMessageConvertor() {
-		super(new MediaType("application", "text", Charset.forName("UTF-8")));
+		super(new MediaType("application", "json", Charset.forName("UTF-8")),
+				new MediaType("application", "+json", Charset.forName("UTF-8")));
 	}
 
 	@Override
@@ -26,14 +28,14 @@ public class SnHttpMessageConvertor extends AbstractHttpMessageConverter<UserVo>
 	protected UserVo readInternal(Class<? extends UserVo> clazz, HttpInputMessage inputMessage)
 			throws IOException, HttpMessageNotReadableException {
 		// TODO Auto-generated method stub
-		return UserVo.valueOf("李四", 100);
+		return UserVo.valueOf("Hello World", 100);
 	}
 
 	@Override
 	protected void writeInternal(UserVo t, HttpOutputMessage outputMessage)
 			throws IOException, HttpMessageNotWritableException {
 
-		String out = "hello:" + t.getName() + "-" + t.getAge();
+		String out = "hello:"+t.getName() + t.getAge();
 		outputMessage.getBody().write(out.getBytes());
 
 	}
